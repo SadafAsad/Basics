@@ -95,28 +95,12 @@ class Solution:
 
         # both numbers only have one more digit left
         if num1_node.next==None and num2_node.next==None:
-            # Calculate the new digit
-            sum = num1_node.val+num2_node.val+borrow
-            digit = sum%10
-            borrow = sum//10
-            # Form the linkedlist
-            new_node = ListNode(digit, None)
-            node.next = new_node
             if borrow!=0:
-                node = new_node
-                new_node = ListNode(digit, None)
+                new_node = ListNode(borrow, None)
                 node.next = new_node
         
         # num1 has only one digit left to work with
         elif num1_node.next==None:
-            # Calculate the new digit
-            sum = num1_node.val+num2_node.val+borrow
-            digit = sum%10
-            borrow = sum//10
-            # Form the linkedlist
-            new_node = ListNode(digit, None)
-            node.next = new_node
-            node = new_node
             while num2_node.next!=None:
                 # Move to current digit to work with
                 num2_node = num2_node.next
@@ -128,28 +112,12 @@ class Solution:
                 new_node = ListNode(digit, None)
                 node.next = new_node
                 node = new_node
-            # Calculate the new digit
-            sum = num2_node.val+borrow
-            digit = sum%10
-            borrow = sum//10
-            # Form the linkedlist
-            new_node = ListNode(digit, None)
-            node.next = new_node
             if borrow!=0:
-                node = new_node
-                new_node = ListNode(digit, None)
+                new_node = ListNode(borrow, None)
                 node.next = new_node  
         
         # num2 has only one digit left
         else:
-            # Calculate the new digit
-            sum = num1_node.val+num2_node.val+borrow
-            digit = sum%10
-            borrow = sum//10
-            # Form the linkedlist
-            new_node = ListNode(digit, None)
-            node.next = new_node
-            node = new_node
             while num1_node.next!=None:
                 # Move to current digit to work with
                 num1_node = num1_node.next
@@ -161,16 +129,8 @@ class Solution:
                 new_node = ListNode(digit, None)
                 node.next = new_node
                 node = new_node
-            # Calculate the new digit
-            sum = num1_node.val+borrow
-            digit = sum%10
-            borrow = sum//10
-            # Form the linkedlist
-            new_node = ListNode(digit, None)
-            node.next = new_node
             if borrow!=0:
-                node = new_node
-                new_node = ListNode(digit, None)
+                new_node = ListNode(borrow, None)
                 node.next = new_node 
 
         return ans_head
