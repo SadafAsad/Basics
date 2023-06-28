@@ -130,6 +130,8 @@
 # Time Complexity = O(n)
 # Space Complexity = O()
 
+from typing import List
+
 class Solution:
     def twoSumV3(self, nums: List[int], target: int) -> List[int]:
         # Hash Table -> {key=compliment, value=index}
