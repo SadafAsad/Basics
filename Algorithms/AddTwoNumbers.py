@@ -71,8 +71,15 @@ class ListNode:
 
 ################### SOLUTION 2 ########################
 
+# In this solution we are not retrieving the number. We will work our way through the linkedlist
+# add each two digit and the borrow from the last addition and so on
+# the key with linkedlist to look one slot ahead. check if the next is None or not to continue.
+# since we are only traversing through the linkedlist:
+# Time Complexity = O(n)
+# Space Complexity = O(n)
+
 class Solution:
-    def addTwoNumbers(self, num1_node, num2_node):
+    def addTwoNumbersV2(self, num1_node, num2_node):
         sum = num1_node.val+num2_node.val
         digit = sum%10
         borrow = sum//10
