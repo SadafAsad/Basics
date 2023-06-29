@@ -1,4 +1,10 @@
-################### SOLUTION 1 ########################
+################### Question ########################
+
+# Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+
+# The overall run time complexity should be O(log (m+n)).
+
+################### SOLUTION 1 ######################
 
 # In this solution we are simply merging the two arrays and at the end returning the median
 # The merging step is done by traversing both arrays and appending the min number each step
