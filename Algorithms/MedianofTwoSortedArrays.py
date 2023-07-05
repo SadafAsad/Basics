@@ -11,31 +11,31 @@
 # Time Complexity = O(m+n)
 # Space Complexity = O(m+n)
 
-from typing import List
+# from typing import List
 
-class Solution:
-    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        sorted_array = []
-        nums1_index = 0
-        nums2_index = 0
-        for i in range(len(nums1)+len(nums2)):
-            if nums1_index<len(nums1) and nums2_index<len(nums2):
-                if nums1[nums1_index]<=nums2[nums2_index]:
-                    sorted_array.append(nums1[nums1_index])
-                    nums1_index+=1
-                else:
-                    sorted_array.append(nums2[nums2_index])
-                    nums2_index+=1
-            elif nums1_index<len(nums1):
-                sorted_array.append(nums1[nums1_index])
-                nums1_index+=1
-            else:
-                sorted_array.append(nums2[nums2_index])
-                nums2_index+=1
+# class Solution:
+#     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+#         sorted_array = []
+#         nums1_index = 0
+#         nums2_index = 0
+#         for i in range(len(nums1)+len(nums2)):
+#             if nums1_index<len(nums1) and nums2_index<len(nums2):
+#                 if nums1[nums1_index]<=nums2[nums2_index]:
+#                     sorted_array.append(nums1[nums1_index])
+#                     nums1_index+=1
+#                 else:
+#                     sorted_array.append(nums2[nums2_index])
+#                     nums2_index+=1
+#             elif nums1_index<len(nums1):
+#                 sorted_array.append(nums1[nums1_index])
+#                 nums1_index+=1
+#             else:
+#                 sorted_array.append(nums2[nums2_index])
+#                 nums2_index+=1
         
-        if len(sorted_array)%2==1:
-            return sorted_array[len(sorted_array)//2]
-        return (sorted_array[len(sorted_array)//2]+sorted_array[len(sorted_array)//2-1])/2
+#         if len(sorted_array)%2==1:
+#             return sorted_array[len(sorted_array)//2]
+#         return (sorted_array[len(sorted_array)//2]+sorted_array[len(sorted_array)//2-1])/2
     
 ################### SOLUTION 2 ######################
 
@@ -62,4 +62,62 @@ class Solution:
 # Time Complexity = O(logm+logn) = O(logmn)
 # Space Complexity = O(logmn) <- only because of recursion otherwise we are allocating more than constant number of space
 
+from typing import List
 
+# Be careful not to get confused. You are working with index! 
+class Solution:
+    def findMedianSortedArrays(self, A: List[int], B: List[int]) -> float:
+        na, nb = len(A), len(B)
+        n = na + nb
+        
+        def solve(k, a_start, a_end, b_start, b_end):
+            # If the segment of on array is empty, it means we have passed all
+            # its element, just return the corresponding element in the other array.
+            
+            # AND to do so, you have to see how many elements you passed in the other one
+            # to know which element to get from the remaining array
+            # hence the - x_start
+            if a_start > a_end: 
+                return B[k - a_start]
+            if b_start > b_end: 
+                return A[k - b_start]
+
+            # Get the middle indexes and middle values of A and B.
+            a_mid_index, b_mid_index = (a_start + a_end) // 2, (b_start + b_end) // 2
+            a_mid_value, b_mid_value = A[a_mid_index], B[b_mid_index]
+
+            # If k is in the right half of A + B, remove the smaller left half.
+            if a_mid_index + b_mid_index < k:
+                # When removing the smaller left side, the k should also change
+                # Cause removing elements after k effects k's place itself
+               
+                # Note here we are not changing k!
+                # And that;s because we are not actually removing the elements after it
+                # We are working with indexes and only changing those not the array itself.
+
+                # To find out which left side is the smaller one
+                # the mid is also being removed
+                if a_mid_value > b_mid_value:
+                    return solve(k, a_start, a_end, b_mid_index + 1, b_end)
+                else:
+                    return solve(k, a_mid_index + 1, a_end, b_start, b_end)
+            # Otherwise, remove the larger right half. 
+            else:
+                # When removing the larger right side, the k doesn't have to change
+                # Cause removing elements after k doesn't effect the k's place itself
+                # However we were not changing k anyway, right? (reason in the above if statement)
+                if a_mid_value > b_mid_value:
+                    return solve(k, a_start, a_mid_index - 1, b_start, b_end)
+                else:
+                    return solve(k, a_start, a_end, b_start, b_mid_index - 1)
+        
+        # If n(A+B) is odd there is middle to the A+B hence the median
+        if n % 2:
+            # 5//2=2 this is the index of the median that we are looking for
+            # Which means median is the 3rd element in the A+B
+            return solve(n // 2, 0, na - 1, 0, nb - 1)
+        # If n(A+B) is even there is no middle to the A+B hence two slots to calculate the median
+        else:
+            # 6//2=3 this is one of the slots and the other is 4
+            # This means the 3rd and 4th elements of A+B
+            return (solve(n // 2 - 1, 0, na - 1, 0, nb - 1) + solve(n // 2, 0, na - 1, 0, nb - 1)) / 2
