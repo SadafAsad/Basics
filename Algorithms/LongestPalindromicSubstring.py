@@ -6,14 +6,17 @@ class Solution:
             max_s = ""
             start_index = start_index_tmp
             end_index = len(s)-1
+            counter = 0
             while start_index<end_index:
                 if s[start_index]==s[end_index]:
                     max_s+=s[start_index]
                     start_index+=1
                     end_index-=1
                 else:
+                    counter+=1
                     max_s = ""
-                    end_index-=1
+                    start_index = start_index_tmp
+                    end_index = len(s)-1-counter
             
             odd = False
             if start_index==end_index:
