@@ -121,3 +121,56 @@ class Solution:
             # 6//2=3 this is one of the slots and the other is 4
             # This means the 3rd and 4th elements of A+B
             return (solve(n // 2 - 1, 0, na - 1, 0, nb - 1) + solve(n // 2, 0, na - 1, 0, nb - 1)) / 2
+
+################### SOLUTION 3 ######################
+
+# Credits to LeetCode:
+# Follows the same idea of solution 2. We are looking for an index in A and B to partition them in a way 
+# that we can say we have found the smaller half of A and B that combined will be the smaller half of A+B.
+# In this solution we are not going to find it on the A+B array but on the smaller array (let's assume A is the smaller one) -- in size!
+# we'll start by diving it first from the middle (assume that the index in which the left half of A will definitely be in the left of A+B)
+# And to find the index of B which indicates the same thing as mentioned, we'll assume it's (m+n+1)/2-partitionA.
+# Reason being we want to say we have found indexes of A and B in which the'll make up the left half of A+B.
+# Now we'll have to compare the edge slots to see if the indexes are right. If not we'll have to move partitionA 
+# (this is were we are only searching on the smaller array and not A+B)
+# Time Complexity = O(log(min(m,n)))
+# Space Complexity = O(1)
+
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        if len(nums1) > len(nums2):
+            return self.findMedianSortedArrays(nums2, nums1)
+
+
+        m, n = len(nums1), len(nums2)
+        left, right = 0, m
+
+        while left <= right:
+            # The first time it will be the middle index
+            # Will change in next iterations based on the comparison of edges
+            partitionA = (left + right) // 2
+            # And this changes based on whatever is the A's partition
+            partitionB = (m + n + 1) // 2 - partitionA
+
+            # We'll get the edge elements here
+            maxLeftA = float('-inf') if partitionA == 0 else nums1[partitionA - 1]
+            minRightA = float('inf') if partitionA == m else nums1[partitionA]
+            maxLeftB = float('-inf') if partitionB == 0 else nums2[partitionB - 1]
+            minRightB = float('inf') if partitionB == n else nums2[partitionB]
+
+            # this indicates we have found the right indexes!
+            if maxLeftA <= minRightB and maxLeftB <= minRightA:
+                if (m + n) % 2 == 0:
+                    return (max(maxLeftA, maxLeftB) + min(minRightA, minRightB)) / 2
+                else:
+                    return max(maxLeftA, maxLeftB)
+            # If maximum element of the left half of A is greater than the minimum element of the right half of B
+            # Then it indicates that the maxLeftA is too large to be in the smaller half of A+B 
+            # So we'll move it one to the left to push it in the right half of A being the greater half
+            elif maxLeftA > minRightB:
+                right = partitionA - 1
+            # maximum element of left half of B is greater than the minimum element of the right half of A
+            # it means that the minimum element of the right half of A is too small to be in the right half o A+B
+            # So we'll move A's index one to the right to push that element to the left side being the smaller half
+            else:
+                left = partitionA + 1
