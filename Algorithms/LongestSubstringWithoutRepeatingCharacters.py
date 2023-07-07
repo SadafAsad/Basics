@@ -44,17 +44,17 @@ class Solution:
 # Instead, it's using another iterator on the substring to pop until the character is not in there anymore
 # And will also use it o calculate the max length.
 
-# class Solution:
-#     def lengthOfLongestSubstring(self, s: str) -> int:
-#         max_len = 0
-#         char_lst = []
-#         i=j=0
-#         while i<len(s) and j<len(s):
-#             if s[j] not in char_lst:
-#                 char_lst.append(s[j])
-#                 j+=1
-#             else:
-#                 max_len = max(max_len, j-i)
-#                 char_lst.pop(0)
-#                 i+=1
-#         return max(max_len, len(char_lst))
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        max_len = 0
+        char_lst = []
+        i=j=0
+        while i<len(s) and j<len(s):
+            if s[j] not in char_lst:
+                char_lst.append(s[j])
+                j+=1
+            else:
+                max_len = max(max_len, j-i)
+                char_lst.pop(0)
+                i+=1
+        return max(max_len, len(char_lst))
