@@ -77,3 +77,45 @@ class Solution:
 
         i, j = ans
         return s[i:j + 1]
+
+################### SOLUTION 2 ######################
+
+# Credits to LeetCode:
+# In the first solution checking if a string is palindrome or not was of O(n) complexity and in the second solution if was of O(1).
+# In both of the solutions we were working with two indexes, basically we were focused on the bounds of the substring.
+# In this solution we will take each element as the center of a possible palindrome and more outward to check if it is a palindrome or not
+# This means n centers to check for odd length palindromes and n-1 centers to check for even lengths palindromes. which in total will be O(n)
+# Time Complexity = O(n^2)
+# Space Complexity = O(1)
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        def expand(i, j):
+            left = i
+            right = j
+            
+            # i and j is the center and wen will work outwards to check for palindromic
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+
+            # This will be the length of the palindrome found with i,j being the center
+            return right - left - 1
+        
+        ans = [0, 0]
+
+        # take each of the elements as centers. Both centers of an odd length string and even length string
+        for i in range(len(s)):
+            odd_length = expand(i, i)
+            if odd_length > ans[1] - ans[0] + 1:
+                dist = odd_length // 2
+                ans = [i - dist, i + dist]
+
+            even_length = expand(i, i + 1)
+            if even_length > ans[1] - ans[0] + 1:
+                dist = (even_length // 2) - 1
+                ans = [i - dist, i + 1 + dist]
+                
+        i, j = ans
+        return s[i:j + 1]
+    
