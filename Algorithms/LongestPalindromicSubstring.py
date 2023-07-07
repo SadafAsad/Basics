@@ -85,6 +85,7 @@ class Solution:
 # In both of the solutions we were working with two indexes, basically we were focused on the bounds of the substring.
 # In this solution we will take each element as the center of a possible palindrome and more outward to check if it is a palindrome or not
 # This means n centers to check for odd length palindromes and n-1 centers to check for even lengths palindromes. which in total will be O(n)
+# Note: even though it is still of O(n^2) complexity is much better than the DP solution cause most of the centers won't generate a palindrome
 # Time Complexity = O(n^2)
 # Space Complexity = O(1)
 
