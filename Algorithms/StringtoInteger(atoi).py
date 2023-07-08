@@ -17,4 +17,42 @@
 
 ################### SOLUTION 1 ########################
 
+class Solution:
+    def myAtoi(self, s: str) -> int:
+        start = 0
+        while start<len(s):
+            if s[start]==" ":
+                start+=1
+            else:
+                break
+        
+        if start<len(s):
+            if s[start]=="-":
+                sign = -1
+                start+=1
+            elif s[start]=="+":
+                sign = 1
+                start+=1
+            elif ord(s[start])>=ord('0') and ord(s[start])<=ord('9'):
+                sign = 1
+            else:
+                return 0
+        else:
+            return 0
+
+        integer = 0 
+        start_tmp = start
+        while start<len(s) and ord(s[start])>=ord('0') and ord(s[start])<=ord('9'):
+            integer = integer*10+ord(s[start])-48
+            start+=1
+        end = start
+
+        if sign==1:
+            if integer<=2**31-1:
+                return integer*sign
+            return 2**31-1
+        else:
+            if integer<=2**31:
+                return integer*sign
+            return -(2**31)
 
