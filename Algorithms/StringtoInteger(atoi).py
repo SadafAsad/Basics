@@ -17,15 +17,20 @@
 
 ################### SOLUTION 1 ########################
 
+# Time Complexity = O(n)
+# Space Complexity = O(1)
+
 class Solution:
     def myAtoi(self, s: str) -> int:
         start = 0
+        # ignoring whitespace characters
         while start<len(s):
             if s[start]==" ":
                 start+=1
             else:
                 break
         
+        # determining integer's sign
         if start<len(s):
             if s[start]=="-":
                 sign = -1
@@ -40,13 +45,13 @@ class Solution:
         else:
             return 0
 
-        integer = 0 
-        start_tmp = start
+        # retrieving the integer
+        integer = 0
         while start<len(s) and ord(s[start])>=ord('0') and ord(s[start])<=ord('9'):
             integer = integer*10+ord(s[start])-48
             start+=1
-        end = start
 
+        # checking in bound integer
         if sign==1:
             if integer<=2**31-1:
                 return integer*sign
