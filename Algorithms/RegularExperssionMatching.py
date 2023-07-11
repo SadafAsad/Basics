@@ -19,6 +19,7 @@ class Solution:
         s_index = 0
         p_index = 0
         while p_index<len(p) and s_index<len(s):
+            # any single character could be matched with .
             if p[p_index]==".":
                 p_index+=1
                 s_index+=1
