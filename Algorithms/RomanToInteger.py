@@ -100,3 +100,36 @@ class Solution:
             else: return ans+1000
         
         return ans
+    
+################### SOLUTION 2 ########################
+
+# A much much cleaner solution.
+# You have a hash map with the roman digits.
+# You'll look up each digit of your roman number.
+# In roman numbers we always have the greater digits first. If a digit was lesser than the one after it then it means subtraction.
+# So let's say if you are currently seeing 'C' but the digit after it is 'D' it means -100 not +100. (400)
+
+# Time Complexity = O(n)
+# Space Complexity = O(1)
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        m = {
+            'I': 1,
+            'V': 5,
+            'X': 10,
+            'L': 50,
+            'C': 100,
+            'D': 500,
+            'M': 1000
+        }
+        
+        ans = 0
+        
+        for i in range(len(s)):
+            if i < len(s) - 1 and m[s[i]] < m[s[i+1]]:
+                ans -= m[s[i]]
+            else:
+                ans += m[s[i]]
+        
+        return ans
