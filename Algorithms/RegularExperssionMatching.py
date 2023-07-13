@@ -19,14 +19,25 @@ class Solution:
         s_index = 0
         p_index = 0
         while p_index<len(p) and s_index<len(s):
-            # any single character could be matched with .
             if p[p_index]==".":
                 p_index+=1
                 s_index+=1
             elif p[p_index]=="*":
+                # If the character before * was .
+                # Means you can match * with anything and nothing
                 if p[p_index-1]==".":
+                    # If there were no more pattern to check for after *
+                    # Anything could be matched with that last * in this case 
                     if p_index==len(p)-1: return True
-                    else: p_index+=1
+                    # But if there were still patterns to check for after *
+                    else:
+                        # Match anything or nothing with that * 
+                        # until you get to the first character that matches the first character after the * in the pattern
+                        p_index+=1
+                        while s_index<len(s):
+                            if p[p_index]!=s[s_index]:
+                                s_index+=1
+
                 elif s[s_index]==p[p_index-1]:
                     while s[s_index]==p[p_index-1]:
                         s_index+=1
